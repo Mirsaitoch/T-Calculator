@@ -22,17 +22,22 @@ struct ContentView: View {
          [.digit(.zero), .decimal, .equals]]
     }
     
+    @State var text = "0"
+    
     var body: some View {
         VStack(alignment: .trailing){
             Spacer()
-            Text("0")
+            Text(text)
                 .font(.custom("Helvetica", fixedSize: 60))
                 .bold()
                 .padding(.horizontal, 20)
             ForEach(buttonTypes, id: \.self){ row in
                 HStack{
                     ForEach(row, id: \.self){ element in
-                        CalculateButton(text: element.description, color: element.color)
+                        Button{
+                            text = text == "0" ? element.description : text + element.description
+                        }label: { CalculateButton(text: element.description, color: element.color)
+                        }
                     }
                 }
             }
@@ -48,11 +53,12 @@ struct CalculateButton: View {
         Text("\(text)")
             .frame(minWidth: 50, maxWidth: .infinity, minHeight: 50, maxHeight: 100)
             .background(color)
+            .foregroundStyle(.black)
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
-
-
+    
+    
 #Preview {
-    ContentView()
+        ContentView()
 }
